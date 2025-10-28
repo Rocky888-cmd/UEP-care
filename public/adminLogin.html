@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login — Test</title>
+  <link rel="stylesheet" href="css/adminLogin.css">
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+</head>
+
+<body>
+  <div class="login-container">
+    <h2>Admin Login (Test)</h2>
+    <p>Sign in with Google to access dashboard.</p>
+
+    <!-- 🧩 reCAPTCHA box -->
+    <div class="g-recaptcha" data-sitekey="YOUR_RECAPTCHA_SITE_KEY"></div>
+
+    <button id="signInBtn" class="btn primary">
+      <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google logo" />
+      Sign in with Google
+    </button>
+  </div>
+
+  <script type="module" src="js/adminLogin.js"></script>
+</body>
+
+</html>

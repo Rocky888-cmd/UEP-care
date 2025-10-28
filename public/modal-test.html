@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Modal Test</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+
+    nav {
+      background: #005baa;
+      padding: 1em;
+    }
+    nav a {
+      color: white;
+      margin: 0 10px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+    }
+    .modal.hidden {
+      display: none;
+    }
+    .modal-content {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 400px;
+      position: relative;
+      text-align: left;
+    }
+    .modal-content h3 {
+      margin-top: 0;
+    }
+    .close {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      border: none;
+      background: transparent;
+      font-size: 20px;
+      cursor: pointer;
+    }
+    button {
+      background: #005baa;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #004080;
+    }
+  </style>
+</head>
+
+<body>
+  <nav>
+    <a href="modal-test.html">Home</a>
+    <a href="#submit" id="open-submit">Submit</a>
+  </nav>
+
+  <h1>Modal Test Page</h1>
+  <p>Click "Submit" in the navigation bar or open <b>modal-test.html#submit</b> directly.</p>
+
+  <div id="submitModal" class="modal hidden">
+    <div class="modal-content">
+      <button class="close" id="close-modal">&times;</button>
+      <h3>Submit a Concern</h3>
+      <p>This is a test modal. If you see this, it’s working!</p>
+      <button id="cancel">Close</button>
+    </div>
+  </div>
+
+  <script>
+    const modal = document.getElementById('submitModal');
+    const openBtn = document.getElementById('open-submit');
+    const closeBtn = document.getElementById('close-modal');
+    const cancelBtn = document.getElementById('cancel');
+
+    function openModal(e) {
+      if (e) e.preventDefault();
+      modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      modal.classList.add('hidden');
+      document.body.style.overflow = '';
+      if (window.location.hash === '#submit') {
+        history.pushState('', document.title, window.location.pathname);
+      }
+    }
+
+    openBtn.addEventListener('click', openModal);
+    closeBtn.addEventListener('click', closeModal);
+    cancelBtn.addEventListener('click', closeModal);
+
+    // open automatically if hash is #submit
+    window.addEventListener('load', () => {
+      if (window.location.hash === '#submit') openModal();
+    });
+    window.addEventListener('hashchange', () => {
+      if (window.location.hash === '#submit') openModal();
+      else closeModal();
+    });
+  </script>
+</body>
+</html>

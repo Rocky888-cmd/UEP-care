@@ -1,0 +1,443 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>University of Eastern Philippines — Anonymous Concerns Portal</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/animation.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="https://www.google.com/recaptcha/enterprise.js?render=6LeHBvkrAAAAAIA0obvr7iD0kvgk84RDvbCt71jA"></script>
+</head>
+
+<body>
+  <header class="nav">
+    <div class="nav-brand">
+      <img src="assets/usc-logo.png" alt="UEP Logo" class="brand-logo">
+      <span>UEP Anonymous Concerns</span>
+    </div>
+
+
+    <!-- Hamburger icon -->
+    <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">
+      ☰
+    </button>
+
+    <!-- <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">
+      <span class="bar">☰</span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </button> -->
+
+
+    <nav class="nav-links" id="nav-links">
+      <a href="index.html">Home</a>
+      <a href="#goal">Goal</a>
+      <a href="#submit" id="open-submit">Submit</a>
+      <a href="submitted.html">Concern</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+
+
+  <!-- Cover -->
+  <section class="cover">
+    <img src="assets/cover.gif" alt="UEP campus cover" class="cover-img" />
+    <div class="cover-overlay"></div>
+    <div class="cover-content">
+      <h1>University of Eastern Philippines Anonymous Concerns Portal</h1>
+      <p class="lead">Don't be afraid to submit your report — this is for the betterment of our university. Don't worry:
+        we do not collect personal information.</p>
+      <div class="cover-actions">
+        <button id="start-submit" class="btn primary">Submit a Concern</button>
+        <a href="submitted.html" class="btn ghost">Track a Ticket</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mission / Vision -->
+  <section id="mission" class="info-cards">
+    <div class="card">
+      <h3>Mission</h3>
+      <p>To provide a secure, anonymous channel for reporting campus-related concerns so the University can act promptly
+        and responsibly.</p>
+    </div>
+    <div class="card">
+      <h3>Vision</h3>
+      <p>A safe, transparent, and responsive campus where concerns are addressed and resolved for everyone's welfare.
+      </p>
+    </div>
+  </section>
+
+  <!-- About / Goal / Contact -->
+  <section id="about" class="text-section">
+    <h2>About</h2>
+    <p>This portal allows students, personnel, and visitors to submit anonymous reports related to General, Academic,
+      Safety, IT/System, and Facilities issues.</p>
+  </section>
+
+  <section id="goal" class="text-section">
+    <h2>Goal</h2>
+    <ul>
+      <li>Collect actionable reports without collecting personal data.</li>
+      <li>Track concerns with ticket codes and QR codes.</li>
+      <li>Provide a staff dashboard for authorized personnel to manage and resolve reports.</li>
+    </ul>
+  </section>
+
+  <section id="contact" class="text-section">
+    <h2>Contact</h2>
+    <p>If you have questions about how the system works or privacy, contact: rbmdeveloper.ph25@gmail.com</p>
+  </section>
+
+  <div id="recaptcha-container"></div>
+
+  <footer class="site-footer">
+    <p>&copy; <span id="year"></span> University of Eastern Philippines — Anonymous Concerns Portal</p>
+  </footer>
+
+  <!-- Submit Modal -->
+  <div id="submitModal" class="modal hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Submit a Concern</h3>
+        <button class="close-modal" id="close-modal" aria-label="Close modal">&times;</button>
+      </div>
+
+      <form id="concernForm" class="concern-form">
+        <div class="form-group">
+          <label for="category">Category</label>
+          <select id="category" name="category" required>
+            <option value="">-- Select Category --</option>
+            <option value="General">General</option>
+            <option value="Academic">Academic</option>
+            <option value="Safety">Safety</option>
+            <option value="IT/System">IT/System</option>
+            <option value="Facilities">Facilities</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" rows="5" placeholder="Describe your concern in detail..."
+            required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="attachments">
+            Attach Images (Max 4)
+            <span class="optional-text">(optional)</span>
+          </label>
+          <input id="attachments" name="attachments" type="file" accept="image/*" multiple data-max-files="4" />
+          <div id="imagePreview" class="image-preview"></div>
+        </div>
+        <div class="loading-bar"></div>
+        <div class="modal-actions">
+
+
+          <button type="submit" class="btn primary" id="submitBtn">
+            <span class="btn-text">Submit Concern</span>
+            <span class="btn-loading hidden">
+              <svg class="spinner" viewBox="0 0 50 50">
+                <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+              </svg>
+            </span>
+          </button>
+          <button type="button" id="cancel" class="btn ghost">Cancel</button>
+        </div>
+      </form>
+
+      <div id="afterSubmit" class="after-submit hidden">
+        <div class="success-animation">
+          <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+            <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" />
+            <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
+          </svg>
+        </div>
+        <h4>Concern Submitted Successfully</h4>
+        <p>Your ticket number:</p>
+        <div class="ticket-code">
+          <strong id="ticketCode"></strong>
+          <button id="copyCode" class="copy-btn" aria-label="Copy ticket code">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
+              <path
+                d="M16 1H4C3 1 2 2 2 3v14h2V3h12V1zm3 4H8C7 5 6 6 6 7v14c0 1 1 2 2 2h11c1 0 2-1 2-2V7c0-1-1-2-2-2zm0 16H8V7h11v14z" />
+            </svg>
+          </button>
+        </div>
+        <!-- QR Code container -->
+        <div id="qrContainer" style="margin-top:12px;"></div>
+        <a id="downloadQR" class="btn" href="#" style="display:inline-block;margin-top:8px;">Download QR</a>
+
+
+
+        <div class="after-submit-actions">
+          <a href="submitted.html" class="btn primary">Track Your Concern</a>
+          <button id="submitAnother" class="btn ghost">Submit Another</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <script type="module">
+    // ✅ Display current year in footer
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // ✅ Firebase imports
+    import { auth, db, storage } from './js/firebaseConfig.js';
+    import {
+      ref as dbRef,
+      push,
+      set,
+      get
+    } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
+    import {
+      ref as storageRef,
+      uploadBytesResumable,
+      getDownloadURL
+    } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-storage.js";
+
+    // ✅ Import modal features (includes file preview handling)
+    import { initModal, initFormSubmission } from './js/modal.js';
+    import { RecaptchaVerifier } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+    import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-functions.js";
+
+    import { functions } from './js/firebaseConfig.js';
+
+
+
+    // Initialize modal
+    initModal();
+
+    // ✅ Navbar toggle logic
+    const navToggle = document.getElementById('nav-toggle');
+    const navLinks = document.getElementById('nav-links');
+    const navLinkItems = navLinks.querySelectorAll('a');
+
+    const functions = getFunctions();
+    const verifyRecaptcha = httpsCallable(functions, "verifyRecaptcha");
+
+
+    // ✅ Initialize Firebase reCAPTCHA
+    const recaptchaVerifier = new RecaptchaVerifier('recaptcha-container', {
+      'size': 'invisible', // 'normal' for visible checkbox, 'invisible' for auto
+      'callback': (token) => {
+        console.log('reCAPTCHA solved, token:', token);
+      },
+      'expired-callback': () => {
+        console.warn('reCAPTCHA expired. Please submit again.');
+      }
+    }, auth);
+
+    navToggle.addEventListener('click', () => {
+      navLinks.classList.toggle('active');
+      navToggle.classList.toggle('active');
+    });
+
+    // Close menu when a link is clicked
+    navLinkItems.forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('active');
+        navToggle.classList.remove('active');
+      });
+    });
+
+    // Utility to generate Firebase-like push ID (no dash)
+    function generatePushID() {
+      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+      let id = '';
+      for (let i = 0; i < 20; i++) {
+        id += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      return id;
+    }
+
+    // Hash using SHA-256 with salt
+    async function hashWithSalt(value, salt = 'UEP-Anonymous-Salt') {
+      const encoder = new TextEncoder();
+      const data = encoder.encode(value + salt);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    // Generate final ticket (unhashed for user preview, hashed for DB)
+    async function generateTicketCode() {
+      const ticket = generatePushID(); // like Firebase push ID
+      const hashedTicket = await hashWithSalt(ticket);
+      return { ticket, hashedTicket };
+    }
+
+
+    // ✅ Upload images with progress
+    async function uploadImagesWithProgress(files, ticket) {
+      const urls = [];
+      const progressBar = document.createElement('div');
+      progressBar.className = 'upload-progress';
+      progressBar.innerHTML = `
+      <div class="progress-bar-container">
+        <div class="progress-bar" id="uploadProgressBar"></div>
+      </div>
+      <p id="uploadProgressText">Starting upload...</p>
+    `;
+      document.querySelector('.loading-bar').appendChild(progressBar);
+
+      const max = 4;
+      const list = Array.from(files).slice(0, max);
+      const totalFiles = list.length;
+      let uploaded = 0;
+
+      for (const file of list) {
+        const path = `reports/${ticket}/${Date.now()}_${file.name}`;
+        const sRef = storageRef(storage, path);
+        const uploadTask = uploadBytesResumable(sRef, file);
+
+        await new Promise((resolve, reject) => {
+          uploadTask.on(
+            'state_changed',
+            (snapshot) => {
+              const percent = ((snapshot.bytesTransferred / snapshot.totalBytes) * 100).toFixed(0);
+              document.getElementById('uploadProgressText').textContent =
+                `Uploading ${uploaded + 1}/${totalFiles} (${percent}%)...`;
+
+              const overall = ((uploaded + percent / 100) / totalFiles) * 100;
+              document.getElementById('uploadProgressBar').style.width = `${overall}%`;
+            },
+            (error) => reject(error),
+            async () => {
+              const url = await getDownloadURL(uploadTask.snapshot.ref);
+              urls.push(url);
+              uploaded++;
+              resolve();
+            }
+          );
+        });
+      }
+
+      document.getElementById('uploadProgressText').textContent = 'Upload complete!';
+      setTimeout(() => progressBar.remove(), 1000);
+      return urls;
+    }
+
+    // ✅ Initialize form submission logic (handled by modal.js)
+    initFormSubmission(async (e) => {
+
+      // ✅ Google reCAPTCHA Enterprise validation
+      let recaptchaToken;
+      try {
+        recaptchaToken = await grecaptcha.enterprise.execute(
+          '6LeHBvkrAAAAAIA0obvr7iD0kvgk84RDvbCt71jA',
+          { action: 'submit_concern' }
+        );
+        console.log('✅ reCAPTCHA token generated:', recaptchaToken);
+
+        // 🔍 Verify with Firebase Cloud Function
+        const verifyRecaptcha = httpsCallable(getFunctions(), "verifyRecaptcha");
+        const result = await verifyRecaptcha({ token: recaptchaToken });
+
+        console.log("reCAPTCHA verification result:", result.data);
+
+        if (!result.data.success || result.data.score < 0.5) {
+          alert("⚠️ reCAPTCHA verification failed. Please try again.");
+          throw new Error("Low reCAPTCHA score or invalid token");
+        }
+
+        console.log("✅ reCAPTCHA verified successfully with score:", result.data.score);
+
+      } catch (err) {
+        alert("reCAPTCHA validation failed. Please refresh and try again.");
+        console.error(err);
+        throw err;
+      }
+
+
+      // ✅ Gather form data
+      const formData = new FormData(e.target);
+      const category = formData.get('category');
+      const message = formData.get('message').trim();
+      const files = document.getElementById('attachments')?.files || [];
+
+
+
+      if (!category || !message) {
+        throw new Error('Please select a category and write a message.');
+      }
+
+      const { ticket, hashedTicket } = await generateTicketCode();
+
+
+      // Show progress while uploading
+      const images = files.length > 0 ? await uploadImagesWithProgress(files, ticket) : [];
+
+      // ✅ Save report to Firebase Database
+      const reportsRef = dbRef(db, 'reports');
+      const newReportRef = push(reportsRef);
+      const now = new Date().toISOString();
+
+      const reportData = {
+        ticketHash: hashedTicket,
+        ticket,
+        category,
+        message,
+        images,
+        status: 'Submitted',
+        createdAt: now,
+        updatedAt: now,
+        assignedTo: null
+      };
+
+
+      await set(newReportRef, reportData);
+
+
+      // ✅ QR Code + Copy ticket code
+      const ticketCode = document.getElementById("ticketCode");
+      const copyBtn = document.getElementById("copyCode");
+      const qrContainer = document.getElementById("qrContainer");
+      const downloadQR = document.getElementById("downloadQR");
+
+      // Show ticket code
+      ticketCode.textContent = ticket;
+
+      // Copy to clipboard
+      copyBtn.addEventListener("click", () => {
+        navigator.clipboard.writeText(ticket).then(() => {
+          alert("Ticket code copied!");
+        });
+      });
+
+      // Generate QR code
+      qrContainer.innerHTML = "";
+      const qr = new QRCode(qrContainer, {
+        text: ticket,
+        width: 256,
+        height: 256,
+        correctLevel: QRCode.CorrectLevel.H
+      });
+
+      // Convert QR canvas to downloadable PNG
+      setTimeout(() => {
+        const canvas = qrContainer.querySelector("canvas");
+        if (canvas) {
+          canvas.toBlob(blob => {
+            const blobUrl = URL.createObjectURL(blob);
+            downloadQR.href = blobUrl;
+            downloadQR.download = `${ticket}_QR.png`;
+          });
+        }
+      }, 100);
+
+
+
+      // ✅ Clear form after submission
+      if (typeof window.clearFormFields === 'function') window.clearFormFields();
+    });
+  </script>
+
+</body>
+
+</html>

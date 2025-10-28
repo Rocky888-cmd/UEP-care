@@ -1,0 +1,95 @@
+/* Spinner container */
+.btn-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* Spinner animation */
+.spinner {
+  animation: rotate 1s linear infinite;
+  width: 22px;
+  height: 22px;
+}
+
+.spinner .path {
+  stroke: white;
+  stroke-linecap: round;
+  animation: dash 1.5s ease-in-out infinite;
+}
+
+/* Animation keyframes */
+@keyframes rotate {
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes dash {
+  0% { stroke-dasharray: 1, 150; stroke-dashoffset: 0; }
+  50% { stroke-dasharray: 90, 150; stroke-dashoffset: -35; }
+  100% { stroke-dasharray: 90, 150; stroke-dashoffset: -124; }
+}
+
+
+/* ✅ Success animation styling */
+.success-animation {
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  position: relative;
+  margin-bottom: 10px; /* spacing from text */
+}
+
+.checkmark {
+  width: 100%;
+  height: 100%;
+  stroke-width: 3;
+  stroke: #22c55e;
+  stroke-miterlimit: 10;
+  box-shadow: inset 0px 0px 0px #22c55e;
+  animation: fill 0.4s ease-in-out 0.4s forwards, scale 0.3s ease-in-out 0.9s both;
+}
+
+.checkmark__circle {
+  stroke-dasharray: 166;
+  stroke-dashoffset: 166;
+  stroke-width: 3;
+  border-radius: 50%;
+  stroke-miterlimit: 10;
+  stroke: #22c55e;
+  fill: none;
+  animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+
+.checkmark__check {
+  transform-origin: 50% 50%;
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+  animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.6s forwards;
+}
+
+/* ✅ Keyframes */
+@keyframes stroke {
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes scale {
+  0%, 100% {
+    transform: none;
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+@keyframes fill {
+  100% {
+    box-shadow: inset 0px 0px 0px 30px #22c55e;
+  }
+}

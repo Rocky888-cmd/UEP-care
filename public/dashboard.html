@@ -1,0 +1,129 @@
+<!-- dashboard.html -->
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Admin Dashboard — UEP Portal</title>
+  <link rel="stylesheet" href="css/dashboard.css">
+
+
+</head>
+
+<body>
+  <div style="display:flex;min-height:100vh">
+    <aside style="width:260px;padding:20px;background:#fff;border-right:1px solid #eee">
+      <h3>Admin</h3>
+      <div id="adminInfo">Signing in...</div>
+      <nav style="margin-top:20px;display:flex;flex-direction:column;gap:8px">
+        <button class="btn ghost" id="navDashboard">Dashboard</button>
+        <button class="btn ghost" id="navReports">Reports List</button>
+        <button class="btn ghost" id="navStats">Statistics</button>
+        <button class="btn ghost" id="navStaff">Staff List</button>
+        <button class="btn ghost" id="navSettings">Settings</button>
+        <button class="btn ghost" id="signOutBtn">Sign out</button>
+      </nav>
+    </aside>
+
+    <main style="flex:1;padding:22px">
+      <section id="dashboardView">
+        <h2>Overview</h2>
+        <div class="kpi-grid" id="kpis">
+          <!-- KPI cards fill by JS -->
+        </div>
+        <h3 style="margin-top:18px">Recent Reports</h3>
+        <table class="table" id="reportsTable">
+          <thead>
+            <tr>
+              <th>Report #</th>
+              <th>Date</th>
+              <th>Category</th>
+              <th>Status</th>
+              <th>Assigned</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </section>
+
+      <section id="reportsView" style="display:none">
+        <h2>Reports List</h2>
+        <table class="table" id="reportListTable">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Ticket</th>
+              <th>Category</th>
+              <th>Status</th>
+              <th>Assigned</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </section>
+
+      <section id="statsView" style="display:none">
+        <h2>Statistics</h2>
+
+        <div class="stats-container">
+          <!-- 📈 Monthly Reports -->
+          <div class="stats-card">
+            <h3>Monthly Reports Overview</h3>
+            <div class="chart-wrapper">
+              <canvas id="monthlyChart"></canvas>
+            </div>
+          </div>
+
+          <!-- 🧩 Category Distribution -->
+          <div class="stats-card">
+            <h3>Reports by Category</h3>
+            <div class="chart-wrapper">
+              <canvas id="categoryChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <section id="staffView" style="display:none">
+        <h2>Staff Personnel</h2>
+
+        <div style="margin-bottom:15px;padding:10px;border:1px solid #ddd;border-radius:8px;background:#fafafa;">
+          <h3>Add New Staff</h3>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <input type="text" id="staffName" placeholder="Full Name" style="flex:1;padding:8px;">
+            <input type="email" id="staffEmail" placeholder="Email Address" style="flex:1;padding:8px;">
+            <select id="staffRole" style="padding:8px;min-width:120px;"></select>
+            <button id="addStaffBtn" class="btn">Add Staff</button>
+          </div>
+        </div>
+
+        <div id="staffList"></div>
+      </section>
+
+      <section id="settingsView" style="display:none">
+        <h2>Settings</h2>
+        <p>Add Role</p>
+        <div class="role-form">
+          <input type="text" id="newRoleInput" placeholder="Enter new role">
+          <button id="addRoleBtn">Add Role</button>
+        </div>
+
+      </section>
+
+
+
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script type="module">
+    import './js/firebaseConfig.js';
+    import('./js/dashboard.js');
+  </script>
+</body>
+
+</html>
